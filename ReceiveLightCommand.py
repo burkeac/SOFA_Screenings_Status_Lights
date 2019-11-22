@@ -4,31 +4,27 @@ import socket
 
 
 def setLightColors(R, G, B):
-    # program lights using 
-
     if 0 > R or R > 255 or 0 > G or G > 255 or 0 > B or B > 255: 
         print("invalid code value in setLightColors()")
     else:
         print(R, G, B)
+        return
+        
+        # program the gpio pins
 
 
 # IP of computer trying to reach.
 PORT = 1234
-HOST = '127.0.0.1' #'129.21.144.71'
+HOST = '127.0.0.1'
 
+#genrate and bind socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 s.bind((HOST, PORT))
 s.listen(5)
 
 while True:
     clientsocket, address = s.accept()
-    print("Connection Established!")
-    # clientsocket.send(bytes("Welcome to the server!", "utf-8"))
     msg = clientsocket.recv(1024)
-    
-    #print("msg: " + msg.decode('ascii'))
-
     decodedMSG = msg.decode('ascii')
 
     if decodedMSG == 'Film Begin':

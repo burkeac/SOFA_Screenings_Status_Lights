@@ -1,17 +1,25 @@
 #!/usr/bin/env python
 
 import socket
+import sys
 
 # IP of serving computer
 HOST = '127.0.0.1' #'169.254.207.114'
 PORT = 1234
 
+# Connect to TCP socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# HOST = socket.gethostname()
 s.connect((HOST, PORT))
 
-s.send(bytes('RGB 0 255 0', 'ascii'))
-print("message sent")
+# format message from command line arguments
+arguments = sys.argv
+message = ''
+i = 1
+while i < len(arguments):
+    message += arguments[i] + ' '
+    i += 1
+message = message[:-1]
 
-#msg = s.recv(1024)
-# print(msg.decode("utf-8"))
+# send the message
+s.send(bytes(str(message), 'ascii'))
+print("message sent: " + message)
