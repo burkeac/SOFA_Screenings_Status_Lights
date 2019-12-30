@@ -1,21 +1,20 @@
 #!/usr/bin/env python
 
 import socket
+from gpiozero import LED
 
+R = LED(2)
+G = LED(3)
+B = LED(4)
 
-def setLightColors(R, G, B):
-    if 0 > R or R > 255 or 0 > G or G > 255 or 0 > B or B > 255: 
-        print("invalid code value in setLightColors()")
-    else:
-        print(R, G, B)
-        return
-        
-        # program the gpio pins
-
+# at start of program, turn lights off
+R.off()
+G.off()
+b.off()
 
 # IP of computer trying to reach.
 PORT = 1234
-HOST = '127.0.0.1'
+HOST = '192.168.86.20'
 
 #genrate and bind socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,40 +22,44 @@ s.bind((HOST, PORT))
 s.listen(5)
 
 while True:
-    clientsocket, address = s.accept()
-    msg = clientsocket.recv(1024)
-    decodedMSG = msg.decode('ascii')
+	clientsocket, address = s.accept()
+	msg = clientsocket.recv(1024)
+	decodedMSG = msg.decode('ascii')
 
-    if decodedMSG == 'Film Begin':
-        # set lights to red
-        setLightColors(255, 0, 0)
-        print("lights set to red status")
+	if decodedMSG == 'Film Begin':
+		# set lights to red
+		G.off()
+		B.off()
+		R.on()
 
-    elif decodedMSG == 'Film End':
-        # set lights to yellow
-        setLightColors(255, 255, 0)
-        print("lights set to yellow status")
+		print("lights set to red status")
 
-    elif decodedMSG == 'Intermission':
-        # set lights to green
-        setLightColors(0, 255, 0)
-        print("lights set to green status")
+	elif decodedMSG == 'Film End':
+		# set lights to yellow
+		B.off()
+		R.on()
+		G.on()
+		print("lights set to yellow status")
 
-    elif decodedMSG == 'Starting Soon':
-        # set lights to blue
-        setLightColors(0,0,255)
-        print("lights set to blue status")
+    	elif decodedMSG == 'Intermission':
+        	# set lights to green
+		B.off()
+		G.on()
+		R.off()
+		print("lights set to green status")
 
-    elif decodedMSG == 'No Status':
-        # set lights to off
-        setLightColors(0,0,0)
-        print('lights set to off')
+	elif decodedMSG == 'Starting Soon':
+		# set lights to blue
+        	G.off()
+		R.off()
+		B.on()
+		print("lights set to blue status")
 
-    elif decodedMSG[:3] == 'RGB':
-        splitString = decodedMSG.split()
-        try:
-            setLightColors(int(splitString[1]), int(splitString[2]), int(splitString[3]))
-        except:
-            print("Can not determin RGB values")
+	elif decodedMSG == 'No Status':
+		# set lights to off
+		R.off()
+		G.off()
+		B.off()
+		print('lights set to off')
 
-    else: print("No state for message: " + decodedMSG)
+	else: print("No state for message: " + decodedMSG)
