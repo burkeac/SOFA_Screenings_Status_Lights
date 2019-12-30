@@ -4,7 +4,7 @@ import socket
 import sys
 
 # IP of serving computer
-HOST = '127.0.0.1' #'169.254.207.114'
+HOST = '192.168.86.20' #'127.0.0.1' #'169.254.207.114'
 PORT = 1234
 
 # Connect to TCP socket

@@ -10,11 +10,11 @@ B = LED(4)
 # at start of program, turn lights off
 R.off()
 G.off()
-b.off()
+B.off()
 
 # IP of computer trying to reach.
 PORT = 1234
-HOST = '192.168.86.20'
+HOST = '192.168.86.28'
 
 #genrate and bind socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -41,8 +41,8 @@ while True:
 		G.on()
 		print("lights set to yellow status")
 
-    	elif decodedMSG == 'Intermission':
-        	# set lights to green
+	elif decodedMSG == 'Intermission':
+		# set lights to green
 		B.off()
 		G.on()
 		R.off()
@@ -50,7 +50,7 @@ while True:
 
 	elif decodedMSG == 'Starting Soon':
 		# set lights to blue
-        	G.off()
+		G.off()
 		R.off()
 		B.on()
 		print("lights set to blue status")
