@@ -2,6 +2,13 @@
 
 import socket
 from gpiozero import LED
+import subprocess
+
+# this calls a subprocess to get the IP address of the PI 
+Subout = subprocess.Popen(['hostname','-I'], stdout=subprocess.PIPE)
+
+IP = str(Subout.communicate()[0])[2:][:-4]
+
 
 R = LED(2)
 G = LED(3)
@@ -14,7 +21,9 @@ B.off()
 
 # IP of computer trying to reach.
 PORT = 1234
-HOST = '192.168.86.28'
+HOST = IP # get IP from above bash exec or can use something like: '192.168.86.20'
+
+print('Socket open at: ' + HOST + ' on port: ' + str(PORT))
 
 #genrate and bind socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
